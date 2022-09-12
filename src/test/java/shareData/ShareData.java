@@ -19,8 +19,7 @@ public class ShareData {
 
 
     @Test
-    public void prepareDriver()
-    {
+    public void prepareDriver() throws InterruptedException {
         System.setProperty("webdriver.chrome.driver", "src/test/resources/chromedriver.exe");
         driver = new ChromeDriver();
         driver.get("https://www.airbnb.com.ro/");
@@ -65,20 +64,21 @@ public class ShareData {
         WebElement searchButton = driver.findElement(By.cssSelector("button[data-testid='structured-search-input-search-button']"));
         searchButton.click();
 
-        WebElement verifyLocation = driver.findElement(By.cssSelector("button[data-index='0']"));
+        Thread.sleep(3500);
+
+        WebElement verifyLocation = driver.findElement(By.xpath("//button[@data-index='0']/div"));
         String actualLocation = verifyLocation.getText();
         String expectedLocation = "Rome";
         Assert.assertEquals(actualLocation,expectedLocation);
 
-        WebElement verifyDate = driver.findElement(By.cssSelector("button[data-index='1']"));
-        verifyDate.getText();
-        String expectedDate = "13-20 sept.";
-        Assert.assertEquals(verifyDate,expectedDate);
+        WebElement verifyDate = driver.findElement(By.cssSelector("button[data-index='1']>div"));
+        String actualDate =verifyDate.getText();
+        String expectedDate = "13–20 sept.";
+        Assert.assertEquals(actualDate,expectedDate);
 
-        WebElement verifyGuest = driver.findElement(By.cssSelector("button[data-index='2']"));
-        verifyGuest.getText();
-        String expectedGuests = "3 ";
-        Assert.assertEquals(verifyGuest,expectedGuests);
+        WebElement verifyGuest = driver.findElement(By.cssSelector("button[data-index='2']>div"));
+        String actualGuests = verifyGuest.getText();
+        Assert.assertTrue(actualGuests.contains("3"));
 
 //        WebElement filterElement = driver.findElement(By.cssSelector("span[class='t1psh3xd dir dir-ltr']"));
 //        filterElement.click();
